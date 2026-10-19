@@ -1,0 +1,25 @@
+name: fms
+services:
+  fms:
+    image: ghcr.io/tstaehli84/filemaker-server:26.0.3-ubuntu24
+    container_name: fms
+    hostname: fms
+    privileged: true
+    restart: unless-stopped
+    stop_grace_period: 135s
+    ports:
+      - "80:80"
+      - "443:443"
+      - "5003:5003"
+    volumes:
+      - fms-data:/opt/FileMaker/FileMaker Server
+      - fms-state:/var/lib/fms-docker
+    environment:
+      - ADMIN_USER=${ADMIN_USER:-admin}
+      - ADMIN_PWD=${ADMIN_PWD:-1234}
+      - ADMIN_PIN=${ADMIN_PIN:-0000}
+volumes:
+  fms-data:
+    name: fms-data
+  fms-state:
+    name: fms-state
